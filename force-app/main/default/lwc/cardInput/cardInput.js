@@ -3,8 +3,9 @@
 import { LightningElement, track, api } from "lwc";
 import { Card } from "./card";
 import { Payment } from "./payment";
-
-export default class CardInput extends LightningElement {
+import { OmniscriptBaseMixin } from 'vlocity_cmt/omniscriptBaseMixin'
+const omniSaveStateKey = "CardInputSaveStateKey";
+export default class CardInput extends OmniscriptBaseMixin(LightningElement) {
   @api paymentMethod = "Credit Card";
   @track paymentOptions = [
     { label: "Credit Card", value: "Credit Card", selected: true },
@@ -12,28 +13,29 @@ export default class CardInput extends LightningElement {
     { label: "Check", value: "Check" }
   ];
 
-  @track card;
+  card;
 
-  @track valid = false;
-  @track cardNumberValid = false;
-  @track cardHolderNameValid = false;
-  @track cardExpiryValid = false;
-  @track cardCVCValid = false;
+  valid = false;
+  cardNumberValid = false;
+  cardHolderNameValid = false;
+  cardExpiryValid = false;
+  cardCVCValid = false;
 
-  @track cardNumberTouched = false;
-  @track cardHolderNameTouched = false;
-  @track cardExpiryTouched = false;
-  @track cardCVCTouched = false;
+  cardNumberTouched = false;
+  cardHolderNameTouched = false;
+  cardExpiryTouched = false;
+  cardCVCTouched = false;
 
-  @track cardNumber = "";
-  @track cardHolderName = "";
-  @track cardExpiry = "";
-  @track cardCVC = "";
+  cardNumber = "";
+  cardHolderName = "";
+  cardExpiry = "";
+  cardCVC = "";
+
 
   connectedCallback() {
     //copy public attributes to private ones
     var self = this;
-    //debugger;
+    // this.cardDetails = this.omniGetSaveState(omniSaveStateKey); 
     window.setTimeout(() => {
       self.card = new Card({
         //reference to this object so will work with web components
@@ -73,9 +75,58 @@ export default class CardInput extends LightningElement {
     }, 50);
   }
 
+  set cardDetails(cardDetails) {
+    if (cardDetails) {
+      this.cardNumber = cardDetails.cardNumber;
+      this.cardHolderName = cardDetails.cardHolderName;
+      this.cardCVC = cardDetails.cardCVC;
+      this.cardExpiry = cardDetails.cardExpiry;
+      this.cardNumberValid = this.getIsValid(this.cardNumber, "cardNumber");
+      this.cardHolderNameValid = this.getIsValid(this.cardHolderName, "cardHolderName");
+      this.cardExpiryValid = this.getIsValid(this.cardExpiry, "cardExpiry");
+      this.cardCVCValid = this.getIsValid(this.cardCVC, "cardCVC");
+      this.cardNumberTouched = true;
+      this.cardHolderNameTouched = true;
+      this.cardExpiryTouched = true;
+      this.cardCVCTouched = true;
+      this.showFeedback();
+      this.checkIfComplete();
+    }
+  }
+
+  // renderedCallback(){
+  //   this.template.querySelector(".cc-input input")
+  // }
+
+  disconnectedCallback() {
+    // let cardDetails = {
+    //   cardNumber: this.cardNumber,
+    //   cardHolderName: this.cardHolderName,
+    //   cardCVV: this.cardCVC,
+    //   cardExpiry: this.cardExpiry
+    // };
+    // this.omniSaveState(cardDetails, omniSaveStateKey, true);
+  }
+
+  /**
+   * adds the class to the target element when it has value
+   * @param {Obect|Element} elem 
+   * @param {Boolean} validity 
+   * @returns elem
+   */
+  _inputHasValue(elem, validity){
+    if(elem != null && elem.value != ""){
+      elem.classList.add("nds-has-value");
+    }else{
+      elem.classList.remove("nds-has-value");
+    }
+    return elem;
+  }
+
   handleCCInput(event) {
     this.cardNumber = event.target.value;
     this.cardNumberValid = this.getIsValid(this.cardNumber, "cardNumber");
+    this._inputHasValue(event.currentTarget, this.cardNumberValid);
     this.cardNumberTouched = true;
     this.showFeedback();
     this.checkIfComplete();
@@ -84,6 +135,7 @@ export default class CardInput extends LightningElement {
   handleNameInput(event) {
     this.cardHolderName = event.target.value;
     this.cardHolderNameValid = this.getIsValid(this.cardHolderName, "cardHolderName");
+    this._inputHasValue(event.currentTarget, this.cardHolderNameValid);
     this.cardHolderNameTouched = true;
     this.showFeedback();
     this.checkIfComplete();
@@ -91,6 +143,7 @@ export default class CardInput extends LightningElement {
   handleExpiryInput(event) {
     this.cardExpiry = event.target.value;
     this.cardExpiryValid = this.getIsValid(this.cardExpiry, "cardExpiry");
+    this._inputHasValue(event.currentTarget, this.cardExpiryValid);
     this.cardExpiryTouched = true;
     this.showFeedback();
     this.checkIfComplete();
@@ -98,6 +151,7 @@ export default class CardInput extends LightningElement {
   handleCVVInput(event) {
     this.cardCVC = event.target.value;
     this.cardCVCValid = this.getIsValid(this.cardCVC, "cardCVC");
+    this._inputHasValue(event.currentTarget, this.cardCVCValid);
     this.cardCVCTouched = true;
     this.showFeedback();
     this.checkIfComplete();
@@ -106,42 +160,42 @@ export default class CardInput extends LightningElement {
   showFeedback() {
     if (!this.cardNumberValid && this.cardNumberTouched) {
       //show error label
-      this.template.querySelectorAll(".cardNumberError")[0].classList.remove("slds-hide");
-      this.template.querySelectorAll(".cardNumberFormElement")[0].classList.add("slds-has-error");
+      this.template.querySelectorAll(".cardNumberError")[0].classList.remove("nds-hide");
+      this.template.querySelectorAll(".cardNumberFormElement")[0].classList.add("nds-has-error");
     } else {
-      this.template.querySelectorAll(".cardNumberError")[0].classList.add("slds-hide");
+      this.template.querySelectorAll(".cardNumberError")[0].classList.add("nds-hide");
       this.template
         .querySelectorAll(".cardNumberFormElement")[0]
-        .classList.remove("slds-has-error");
+        .classList.remove("nds-has-error");
     }
 
     if (!this.cardHolderNameValid && this.cardHolderNameTouched) {
       //show error label
-      this.template.querySelectorAll(".cardNameError")[0].classList.remove("slds-hide");
-      this.template.querySelectorAll(".cardNameFormElement")[0].classList.add("slds-has-error");
+      this.template.querySelectorAll(".cardNameError")[0].classList.remove("nds-hide");
+      this.template.querySelectorAll(".cardNameFormElement")[0].classList.add("nds-has-error");
     } else {
-      this.template.querySelectorAll(".cardNameError")[0].classList.add("slds-hide");
-      this.template.querySelectorAll(".cardNameFormElement")[0].classList.remove("slds-has-error");
+      this.template.querySelectorAll(".cardNameError")[0].classList.add("nds-hide");
+      this.template.querySelectorAll(".cardNameFormElement")[0].classList.remove("nds-has-error");
     }
 
     if (!this.cardExpiryValid && this.cardExpiryTouched) {
       //show error label
-      this.template.querySelectorAll(".cardExpiryError")[0].classList.remove("slds-hide");
-      this.template.querySelectorAll(".cardExpiryFormElement")[0].classList.add("slds-has-error");
+      this.template.querySelectorAll(".cardExpiryError")[0].classList.remove("nds-hide");
+      this.template.querySelectorAll(".cardExpiryFormElement")[0].classList.add("nds-has-error");
     } else {
-      this.template.querySelectorAll(".cardExpiryError")[0].classList.add("slds-hide");
+      this.template.querySelectorAll(".cardExpiryError")[0].classList.add("nds-hide");
       this.template
         .querySelectorAll(".cardExpiryFormElement")[0]
-        .classList.remove("slds-has-error");
+        .classList.remove("nds-has-error");
     }
 
     if (!this.cardCVCValid && this.cardCVCTouched) {
       //show error label
-      this.template.querySelectorAll(".cardCVVError")[0].classList.remove("slds-hide");
-      this.template.querySelectorAll(".cardCVVFormElement")[0].classList.add("slds-has-error");
+      this.template.querySelectorAll(".cardCVVError")[0].classList.remove("nds-hide");
+      this.template.querySelectorAll(".cardCVVFormElement")[0].classList.add("nds-has-error");
     } else {
-      this.template.querySelectorAll(".cardCVVError")[0].classList.add("slds-hide");
-      this.template.querySelectorAll(".cardCVVFormElement")[0].classList.remove("slds-has-error");
+      this.template.querySelectorAll(".cardCVVError")[0].classList.add("nds-hide");
+      this.template.querySelectorAll(".cardCVVFormElement")[0].classList.remove("nds-has-error");
     }
   }
 
@@ -157,7 +211,7 @@ export default class CardInput extends LightningElement {
       const detail = {
         type: "cardComplete",
         value: {
-          cardNumber: this.cardNumber,
+          cardNumber: this.cardNumber.replace(/ +/g, ""),
           cardHolderName: this.cardHolderName,
           cardCVV: this.cardCVC,
           cardExpiry: this.cardExpiry,
@@ -173,6 +227,8 @@ export default class CardInput extends LightningElement {
 
   despatchCompleteEvent(cardData) {
     const changeEvent = new CustomEvent("cardComplete", { detail: cardData });
+    //update the json
+    this.omniUpdateDataJson(cardData);
     this.dispatchEvent(changeEvent);
   }
 
@@ -188,7 +244,11 @@ export default class CardInput extends LightningElement {
     });
     this.dispatchEvent(changeEvent);
   }
-
+  //custom
+  @api
+  checkValidity() {
+    return this.cardHolderNameValid && this.cardNumberValid && this.cardExpiryValid && this.cardCVCValid;
+  }
   //this syntax means we should be able to leave off 'this'
   getIsValid = (val, validatorName) => {
     var isValid, objVal;
@@ -204,4 +264,5 @@ export default class CardInput extends LightningElement {
     }
     return isValid;
   };
+
 }

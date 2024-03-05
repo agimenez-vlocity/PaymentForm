@@ -1,93 +1,98 @@
 <template>
 
-  <div class="slds ">
-
-    <!-- slds-p-left_x-small slds-p-right_x-small  -->
-    <div class="slds-grid  slds-wrap ">
-
-      <div class="slds-col slds-size_1-of-1 slds-large-size_8-of-12 cc-input slds-form ">
-
-        <div class="slds-form__row">
-          <div class="slds-form__item" role="listitem">
-            <div class="slds-form-element slds-form-element_horizontal slds-form-element_1-col cardNumberFormElement"
-              id="cardNumberFormElement">
-              <label class="slds-form-element__label" for="number">
-                <abbr class="slds-required" title="required">*</abbr>
+  <!--card number-->
+  <div class="cc-input nds-grid nds-wrap">
+    <div class="nds-size_12-of-12">
+      <div class="nds-container_fluid">
+        <div class="nds-form-element nds-form-container cardNumberFormElement">
+          <div class="nds-form-element__control nds-form-element__control-animated-label">
+            <input placeholder="Card number" type="tel" name="number" id="number" class="nds-input"
+              oninput={handleCCInput} onchange={handleCCInput} onblur={handleCCInput}>
+            <div class="nds-form-element__label nds-align-middle nds-animated-label__ease-out">
+              <label for="number">
                 Card Number
+                <abbr class="nds-required" title="required">*</abbr>
               </label>
-              <div class="slds-form-element__control">
-                <input placeholder="Card number" type="tel" name="number" class="slds-input" oninput={handleCCInput}
-                  onchange={handleCCInput} onblur={handleCCInput}>
-                <div class="slds-form-element__help slds-hide cardNumberError" id="cardNumberError">Please enter a valid
-                  credit card number</div>
-              </div>
             </div>
+
+          </div>
+          <div class="nds-form-element__help nds-hide cardNumberError" id="cardNumberError">Please enter a valid
+            credit card number</div>
+        </div>
+      </div>
+    </div>
+
+    <!-- cardholder name-->
+    <div class="nds-size_12-of-12">
+      <div class="nds-container_fluid">
+        <div class="nds-form-element nds-form-container cardNameFormElement">
+          <div class="nds-form-element__control nds-form-element__control-animated-label">
+            <input placeholder="Cardholder name" type="text" name="name" id="name" class="nds-input" oninput={handleNameInput}
+              onblur={handleNameInput}>
+            <div class="nds-form-element__label nds-align-middle nds-animated-label__ease-out">
+              <label for="name">
+                Cardholder name
+                <abbr class="nds-required" title="required">*</abbr>
+              </label>
+            </div>
+
+          </div>
+          <div class="nds-form-element__help nds-hide cardNameError" id="cardNameError">Please enter your name
+            as it appears on your card</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nds-grid nds-wrap nds-x-small-size_12-of-12 nds-small-size_12-of-12 nds-medium-size_12-of-12 nds-large-size_12-of-12"> 
+      <!-- card expiry -->
+      <div class="nds-medium-size_4-of-12 nds-large-size_4-of-12 nds-x-small-size_6-of-12 nds-small-size_6-of-12">
+        <div class="nds-container_fluid">
+          <div class="nds-form-element nds-form-container cardExpiryFormElement">
+            <div class="nds-form-element__control nds-form-element__control-animated-label">
+              <input placeholder="MM/YY" type="tel" name="expiry" id="expiry" class="nds-input"
+                oninput={handleExpiryInput} onblur={handleExpiryInput}>
+              <div class="nds-form-element__label nds-align-middle nds-animated-label__ease-out">
+                <label for="expiry">
+                  Expiry
+                  <abbr class="nds-required" title="required">*</abbr>
+                </label>
+              </div>
+
+            </div>
+            <div class="nds-form-element__help nds-hide cardExpiryError" id="cardExpiryError">Please enter a valid
+              date in the future</div>
           </div>
         </div>
+      </div>
 
-        <div class="slds-form__row">
-          <div class="slds-form__item" role="listitem">
-            <div class="slds-form-element slds-form-element_horizontal slds-form-element_1-col cardNameFormElement"
-              id="cardNameFormElement">
-              <label class="slds-form-element__label" for="name">
-                <abbr class="slds-required" title="required">*</abbr>
-                Full Name
-              </label>
-              <div class="slds-form-element__control">
-                <input placeholder="Full name" type="text" name="name" class="slds-input" oninput={handleNameInput}
-                  onblur={handleNameInput}>
-                <div class="slds-form-element__help slds-hide cardNameError" id="cardNameError">Please enter your name
-                  as it appears on your card</div>
+      <!-- Card CVC -->
+      <div class="nds-medium-size_4-of-12 nds-large-size_4-of-12 nds-x-small-size_6-of-12 nds-small-size_6-of-12">
+        <div class="nds-container_fluid">
+          <div class="nds-form-element nds-form-container cardCVVFormElement">
+            <div class="nds-form-element__control nds-form-element__control-animated-label">
+              <input placeholder="CVV" type="number" name="cvc" id="cvc" class="nds-input" oninput={handleCVVInput}
+                onblur={handleCVVInput}>
+              <div class="nds-form-element__label nds-align-middle nds-animated-label__ease-out">
+                <label for="cvc">
+                  <abbr class="nds-required" title="required">*</abbr>
+                  CVV/CVC
+                  <abbr class="nds-required" title="required">*</abbr>
+                </label>
               </div>
 
             </div>
-          </div>
-        </div>
-
-        <div class="slds-form__row">
-          <div class="slds-form__item" role="listitem">
-            <div class="slds-form-element slds-form-element_horizontal cardExpiryFormElement"
-              id="cardExpiryFormElement">
-              <label class="slds-form-element__label" for="expiry">
-                <abbr class="slds-required" title="required">*</abbr>
-                Expiry
-              </label>
-              <div class="slds-form-element__control">
-                <input placeholder="MM/YY" type="tel" name="expiry" class="slds-input" oninput={handleExpiryInput}
-                  onblur={handleExpiryInput}>
-                <div class="slds-form-element__help slds-hide cardExpiryError" id="cardExpiryError">Please enter a valid
-                  date in the future</div>
-              </div>
-
-            </div>
-          </div>
-
-          <div class="slds-form__item" role="listitem">
-            <div class="slds-form-element slds-form-element_horizontal cardCVVFormElement" id="cardCVVFormElement">
-              <label class="slds-form-element__label" for="cvc">
-                <abbr class="slds-required" title="required">*</abbr>
-                CVV/CVC
-              </label>
-              <div class="slds-form-element__control">
-                <input placeholder="CVC" type="number" name="cvc" class="slds-input" oninput={handleCVVInput}
-                  onblur={handleCVVInput}>
-                <div class="slds-form-element__help slds-hide cardCVVError" id="cardCVVError">Please enter a valid
-                  CVV/CVC number</div>
-              </div>
-
-            </div>
+            <div class="nds-form-element__help nds-hide cardCVVError" id="cardCVVError">Please enter a valid
+              CVV/CVC number</div>
           </div>
         </div>
 
       </div>
-
-      <div class="slds-col slds-size_1-of-1 slds-large-size_4-of-12" style="height: 143px;">
+      <div class="nds-x-small-size_12-of-12 nds-small-size_12-of-12 nds-medium-size_4-of-12 nds-large-size_4-of-12" style="height: 143px;">
         <div lwc:dom="manual" id="cc-wrapper" class="cc-wrapper cc-inner-wrapper">
         </div>
       </div>
-
     </div>
-
+    
   </div>
 
 </template>

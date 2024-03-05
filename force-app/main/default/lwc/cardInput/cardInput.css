@@ -18,7 +18,9 @@
 .slds-form-element_horizontal:not(.slds-form-element_readonly) {
   margin-bottom: unset;
 }
-
+.cc-wrapper{
+  float:none;
+}
 .jp-card.jp-card-safari.jp-card-identified .jp-card-front:before,
 .jp-card.jp-card-safari.jp-card-identified .jp-card-back:before {
   background-image: repeating-linear-gradient(

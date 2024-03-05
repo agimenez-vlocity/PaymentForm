@@ -1,0 +1,46 @@
+{
+    "PaymentAddress": "1234 Perth WA 5000",
+    "PaymentSuccess": false,
+    "ReviewAndConfirm": [
+        {
+            "label": "test",
+            "navTo": "StepPaymentNumber",
+            "value": "12345678912345"
+        },
+        {
+            "label": "test 2",
+            "navTo": "StepPaymentMethodSelect",
+            "value": "12345678912345"
+        }
+    ],
+    "StepPaymentDeclined": {
+    },
+    "StepPaymentMethodSelect": {
+        "CurrPaymentAmount": 1232132131313,
+        "LwcCardInput": {
+            "type": "cardComplete",
+            "value": {
+                "cardCVV": "232",
+                "cardExpiry": "05 / 23",
+                "cardHolderName": "Test Cardholder Name",
+                "cardNumber": "4111 1111 1111 1111",
+                "cardType": "visa"
+            }
+        },
+        "RadPaymentOption": "CCorDC",
+        "Text3": null,
+        "TxtAccountHolderName": null,
+        "TxtBsb": null
+    },
+    "StepPaymentNumber": {
+        "TxtPaymentNumber": "1231232132"
+    },
+    "omniProcessId": "a3C9r000001zZGPEA2",
+    "timeStamp": "2023-03-24T03:53:13.478Z",
+    "userCurrencyCode": "AUD",
+    "userId": "0059r000002iRyFAAU",
+    "userName": "angelo.gimenez@synergy.net.au.cx360r2dev",
+    "userProfile": "System Administrator",
+    "userTimeZone": "480",
+    "userTimeZoneName": "Australia/Perth"
+}
